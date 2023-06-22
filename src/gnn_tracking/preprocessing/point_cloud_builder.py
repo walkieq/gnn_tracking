@@ -116,7 +116,8 @@ class PointCloudBuilder:
         self.feature_scale = list(feature_scale)
         assert len(self.feature_names) == len(self.feature_scale)
 
-        suffix = "-hits.csv.gz"
+        #suffix = "-hits.csv.gz"
+        suffix = "-hits.csv"
         self.prefixes: list[str] = []
         #: Does an output file for a given key exist?
         self.exists: dict[str, bool] = {}
@@ -350,10 +351,15 @@ class PointCloudBuilder:
         Returns:
 
         """
+        print(start)
+        print(stop)
+        #evtid = 0
         for f in self.prefixes[start:stop]:
             self.logger.debug(f"Processing {f}")
+            print(f"Processing {f}")
 
             evtid = int(f.name[-9:])
+            print(f"Processing evtid {evtid}")
 
             try:
                 hits, particles, truth, cells = load_event(
@@ -416,7 +422,7 @@ class PointCloudBuilder:
                 "n_sector_particles": n_sector_particles,
             }
 
-        self.logger.debug("Output statistics:", self.stats[evtid])
+        #self.logger.debug("Output statistics:", self.stats[evtid])
         if self.measurement_mode:
             measurements = pd.DataFrame(self.measurements)
             means = measurements.mean()
